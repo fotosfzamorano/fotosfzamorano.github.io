@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fotos FZamorano - Rodeo Chileno</title>
+    
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <style>
+        /* Estilo Apple: Minimalismo, tipografía limpia y sombras suaves */
+        :root {
+            --bg-color: #fbfbfd; /* Blanco roto típico de Apple */
+            --card-bg: #ffffff;
+            --text-color: #1d1d1f; /* Gris oscuro en lugar de negro puro */
+            --main-border-radius: 22px; /* Curva más pronunciada (Squircle) */
+            --btn-border-radius: 980px; /* Botones tipo píldora */
+            --apple-shadow: 0 4px 24px rgba(0,0,0,0.04); /* Sombra muy suave */
+            --apple-hover-shadow: 0 12px 40px rgba(0,0,0,0.12);
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Transición súper fluida */
+        }
+
+        /* Tipografía del sistema de Apple (San Francisco) */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            -webkit-font-smoothing: antialiased; /* Suavizado de fuente en Mac/iOS */
+        }
+
+        header {
+            padding: 60px 20px 20px;
+        }
+
+        header img {
+            max-width: 220px;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px 20px 40px;
+        }
+
+        /* Botón estilo píldora minimalista */
+        .btn-back {
+            padding: 10px 24px;
+            background-color: rgba(0,0,0,0.05); /* Fondo gris muy sutil */
+            color: var(--text-color);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            display: none;
+            border-radius: var(--btn-border-radius);
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            background-color: rgba(0,0,0,0.1);
+            transform: scale(1.02);
+        }
+
+        h2#folder-title {
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 1.4rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 32px;
+            padding: 20px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Carpetas estilo Apple */
+        .folder-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card-bg); /* Fondo blanco */
+            color: var(--text-color);
+            height: 300px;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 18px;
+            padding: 30px;
+            box-sizing: border-box;
+            border-radius: var(--main-border-radius);
+            box-shadow: var(--apple-shadow);
+            transition: var(--transition);
+        }
+
+        .folder-card:hover {
+            transform: scale(1.02);
+            box-shadow: var(--apple-hover-shadow);
+            color: #0071e3; /* Azul sutil de Apple al pasar el mouse (opcional, le da un toque interactivo) */
+        }
+
+        /* Tarjetas de fotos sin bordes, pura imagen y limpieza */
+        .photo-card {
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            border-radius: var(--main-border-radius);
+            overflow: hidden;
+            box-shadow: var(--apple-shadow);
+            transition: var(--transition);
+        }
+
+        .photo-card:hover {
+            transform: scale(1.02);
+            box-shadow: var(--apple-hover-shadow);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .photo-card img:hover {
+            opacity: 0.9;
+        }
+
+        /* Botón de descarga tipo píldora */
+        .download-btn {
+            display: block;
+            margin: 20px 24px;
+            padding: 14px;
+            background-color: var(--text-color);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: none;
+            border-radius: var(--btn-border-radius);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background-color: #000000;
+            transform: scale(1.02);
+        }
+
+        #load-more {
+            margin: 50px auto 100px;
+            padding: 16px 40px;
+            background-color: var(--text-color);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: var(--btn-border-radius);
+            transition: var(--transition);
+            display: none;
+        }
+
+        #load-more:hover {
+            background-color: #000000;
+            transform: scale(1.02);
+        }
+
+        .loader {
+            margin: 40px;
+            color: #86868b;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        /* ========================================= */
+        /* LIGHTBOX: EFECTO CRISTAL ESMERILADO       */
+        /* ========================================= */
+        
+        .lightbox-modal {
+            display: none; 
+            position: fixed;
+            z-index: 1000; 
+            padding-top: 40px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; 
+            /* Cristal esmerilado típico de iOS/macOS */
+            background-color: rgba(29, 29, 31, 0.8); 
+            backdrop-filter: saturate(180%) blur(20px); 
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+
+        .lightbox-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80vh; 
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            object-fit: contain;
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 25px;
+            right: 40px;
+            color: rgba(255,255,255,0.6);
+            font-size: 40px;
+            font-weight: 300;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 1010;
+        }
+
+        .close-lightbox:hover {
+            color: #ffffff;
+        }
+
+        #lightbox-caption {
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            padding: 25px 0;
+        }
+        
+        #lightbox-caption .download-btn {
+            margin: 0;
+            padding: 14px 32px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #000;
+        }
+
+        #lightbox-caption .download-btn:hover {
+            background-color: #ffffff;
+        }
+
+        .lightbox-content, #lightbox-caption {
+            animation-name: appleZoom;
+            animation-duration: 0.4s;
+            animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        @keyframes appleZoom {
+            from {transform: scale(0.95); opacity: 0;}
+            to {transform: scale(1); opacity: 1;}
+        }
+
+        /* ========================================= */
+        /* OPTIMIZACIÓN PARA CELULARES               */
+        /* ========================================= */
+        
+        @media (max-width: 768px) {
+            header { padding: 40px 10px 10px; }
+            header img { max-width: 160px; }
+            .navigation { padding: 10px; }
+            h2#folder-title { font-size: 1.2rem; }
+
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 16px;
+                padding: 16px;
+            }
+
+            .folder-card, .photo-card img { height: 220px; }
+            .folder-card { font-size: 15px; padding: 15px; }
+            
+            .download-btn {
+                margin: 12px;
+                padding: 12px;
+                font-size: 13px;
+            }
+
+            .close-lightbox { top: 15px; right: 25px; font-size: 35px; }
+            .lightbox-content { max-height: 75vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.png" alt="Fotos FZamorano Logo">
+    </header>
+
+    <div class="navigation">
+        <button id="btn-back" class="btn-back">&larr; Volver</button>
+        <h2 id="folder-title">Inicio</h2>
+    </div>
+
+    <div id="gallery" class="gallery"></div>
+    
+    <div id="loading" class="loader">Cargando colección...</div>
+    <button id="load-more">Ver más fotografías</button>
+
+    <div id="lightbox" class="lightbox-modal">
+        <span class="close-lightbox">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <script>
+        // PEGA AQUÍ LA URL DE TU APLICACIÓN WEB DE APPS SCRIPT
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzZvbYWSGWY4HSCq_3a5KNLRou-GGx0YJ9Be42GcOpqp3RxK96BBrHES3Mt_3OQ5LHD9g/exec';
+        
+        let currentPage = 1;
+        let currentFolderId = '';
+        let folderHistory = [];
+
+        const gallery = document.getElementById('gallery');
+        const loadMoreBtn = document.getElementById('load-more');
+        const loadingText = document.getElementById('loading');
+        const btnBack = document.getElementById('btn-back');
+        const folderTitle = document.getElementById('folder-title');
+
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeLightboxBtn = document.querySelector('.close-lightbox');
+
+        async function loadContent(page, folder = '') {
+            loadingText.style.display = 'block';
+            loadMoreBtn.style.display = 'none';
+            
+            if (page === 1) { gallery.innerHTML = ''; }
+
+            try {
+                let fetchUrl = `${API_URL}?page=${page}`;
+                if (folder !== '') { fetchUrl += `&folderId=${folder}`; }
+
+                const response = await fetch(fetchUrl);
+                const data = await response.json();
+
+                folderTitle.innerText = data.folderName;
+                btnBack.style.display = folderHistory.length > 0 ? 'block' : 'none';
+
+                if (data.folders && data.folders.length > 0) {
+                    data.folders.forEach(subfolder => {
+                        const folderCard = document.createElement('div');
+                        folderCard.className = 'folder-card';
+                        folderCard.innerText = subfolder.name;
+                        
+                        folderCard.addEventListener('click', () => {
+                            folderHistory.push(currentFolderId);
+                            currentFolderId = subfolder.id;
+                            currentPage = 1;
+                            loadContent(currentPage, currentFolderId);
+                        });
+                        gallery.appendChild(folderCard);
+                    });
+                }
+
+                if (data.images && data.images.length > 0) {
+                    data.images.forEach(photo => {
+                        const card = document.createElement('div');
+                        card.className = 'photo-card';
+                        
+                        const fullSizeUrl = photo.url.replace('w1000', 's4000');
+                        
+                        card.innerHTML = `
+                            <img src="${photo.url}" alt="${photo.name}" loading="lazy" class="gallery-thumb" data-full-url="${fullSizeUrl}" data-download-url="${photo.download}">
+                            <a href="${photo.download}" class="download-btn" target="_blank" download>Descargar Original</a>
+                        `;
+                        gallery.appendChild(card);
+                    });
+                }
+
+                loadingText.style.display = 'none';
+
+                if (data.nextPage) {
+                    loadMoreBtn.style.display = 'block';
+                    currentPage = data.nextPage;
+                } else if (page === 1 && data.folders.length === 0 && data.images.length === 0) {
+                    loadingText.innerHTML = "Colección vacía.";
+                    loadingText.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                loadingText.innerHTML = "No se pudo conectar. Verifica tu conexión o los permisos de Drive.";
+            }
+        }
+
+        gallery.addEventListener('click', (e) => {
+            if (e.target.classList.contains('gallery-thumb')) {
+                const imgThumb = e.target;
+                const fullImageUrl = imgThumb.getAttribute('data-full-url'); 
+                const downloadUrl = imgThumb.getAttribute('data-download-url'); 
+
+                lightbox.style.display = "block";
+                lightboxImg.src = fullImageUrl;
+                
+                lightboxCaption.innerHTML = `<a href="${downloadUrl}" class="download-btn" target="_blank" download>Descargar Alta Resolución</a>`;
+                
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        function closeLightbox() {
+            lightbox.style.display = "none";
+            lightboxImg.src = "";
+            document.body.style.overflow = 'auto';
+        }
+
+        closeLightboxBtn.addEventListener('click', closeLightbox);
+        
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target === closeLightboxBtn) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.style.display === 'block') {
+                closeLightbox();
+            }
+        });
+
+        loadContent(currentPage, currentFolderId);
+
+        loadMoreBtn.addEventListener('click', () => {
+            loadContent(currentPage, currentFolderId);
+        });
+
+        btnBack.addEventListener('click', () => {
+            if (folderHistory.length > 0) {
+                currentFolderId = folderHistory.pop();
+                currentPage = 1;
+                loadContent(currentPage, currentFolderId);
+            }
+        });
+    </script>
+
+</body>
+</html>
