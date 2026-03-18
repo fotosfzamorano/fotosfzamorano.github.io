@@ -8,16 +8,27 @@
     <link rel="icon" type="image/png" href="logo.png">
     
     <style>
-        /* Estilo Apple: Minimalismo, tipografía limpia y sombras suaves */
+        /* Estilo Apple Refinado: Sombras con mayor contraste */
         :root {
-            --bg-color: #fbfbfd; /* Blanco roto típico de Apple */
-            --card-bg: #ffffff;
-            --text-color: #1d1d1f; /* Gris oscuro en lugar de negro puro */
-            --main-border-radius: 22px; /* Curva más pronunciada (Squircle) */
-            --btn-border-radius: 980px; /* Botones tipo píldora */
-            --apple-shadow: 0 4px 24px rgba(0,0,0,0.04); /* Sombra muy suave */
-            --apple-hover-shadow: 0 12px 40px rgba(0,0,0,0.12);
-            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Transición súper fluida */
+            --bg-color: #fbfbfd; /* Blanco roto */
+            --card-bg: #ffffff;  /* Blanco puro tarjetas */
+            --text-color: #1d1d1f; 
+            --main-border-radius: 22px; 
+            --btn-border-radius: 980px; 
+            
+            /* ----------------------------------------------------------- */
+            /* MODIFICACIÓN: Sombras más oscuras para mayor definición   */
+            /* ----------------------------------------------------------- */
+            
+            /* Sombra por defecto: Aumentada opacidad de 0.04 a 0.10 (Más notoria) */
+            --apple-shadow: 0 4px 24px rgba(0,0,0,0.10); 
+            
+            /* Sombra al pasar el mouse: Aumentada opacidad de 0.12 a 0.18 (Más profunda) */
+            --apple-hover-shadow: 0 12px 40px rgba(0,0,0,0.18);
+            
+            /* ----------------------------------------------------------- */
+            
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
         }
 
         /* Tipografía del sistema de Apple (San Francisco) */
@@ -391,7 +402,7 @@
 
             } catch (error) {
                 console.error("Error:", error);
-                loadingText.innerHTML = "No se pudo conectar. Verifica tu conexión o los permisos de Drive.";
+                loadingText.innerHTML = "No se pudo conectar. Verifica tu conexión.";
             }
         }
 
