@@ -16,17 +16,9 @@
             --main-border-radius: 22px; 
             --btn-border-radius: 980px; 
             
-            /* ----------------------------------------------------------- */
-            /* MODIFICACIÓN: Sombras más oscuras para mayor definición   */
-            /* ----------------------------------------------------------- */
-            
-            /* Sombra por defecto: Aumentada opacidad de 0.04 a 0.10 (Más notoria) */
+            /* Sombras más oscuras para mayor definición */
             --apple-shadow: 0 4px 24px rgba(0,0,0,0.10); 
-            
-            /* Sombra al pasar el mouse: Aumentada opacidad de 0.12 a 0.18 (Más profunda) */
             --apple-hover-shadow: 0 12px 40px rgba(0,0,0,0.18);
-            
-            /* ----------------------------------------------------------- */
             
             --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
         }
@@ -44,11 +36,58 @@
 
         header {
             padding: 60px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
+        /* Logo ahora tiene cursor pointer */
         header img {
             max-width: 220px;
             height: auto;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        header img:hover {
+            opacity: 0.8;
+            transform: scale(1.02);
+        }
+
+        /* NUEVO: Botón de Instagram Minimalista */
+        .ig-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: transparent;
+            color: var(--text-color);
+            
+            /* AQUÍ ESTÁ EL CAMBIO: 2px de grosor y un poco más oscuro */
+            border: 2px solid rgba(0, 0, 0, 0.404); 
+            
+            border-radius: var(--btn-border-radius);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+        }
+
+        .ig-button:hover {
+            background-color: var(--text-color);
+            color: #ffffff;
+            border-color: var(--text-color);
+            transform: scale(1.05);
+            box-shadow: var(--apple-shadow);
+        }
+
+        .ig-button svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
 
         .navigation {
@@ -62,7 +101,7 @@
         /* Botón estilo píldora minimalista */
         .btn-back {
             padding: 10px 24px;
-            background-color: rgba(0,0,0,0.05); /* Fondo gris muy sutil */
+            background-color: rgba(0,0,0,0.05);
             color: var(--text-color);
             border: none;
             cursor: pointer;
@@ -100,7 +139,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--card-bg); /* Fondo blanco */
+            background-color: var(--card-bg);
             color: var(--text-color);
             height: 300px;
             cursor: pointer;
@@ -117,10 +156,10 @@
         .folder-card:hover {
             transform: scale(1.02);
             box-shadow: var(--apple-hover-shadow);
-            color: #1d1d1f; /* Azul sutil de Apple al pasar el mouse (opcional, le da un toque interactivo) */
+            color: #1d1d1f; 
         }
 
-        /* Tarjetas de fotos sin bordes, pura imagen y limpieza */
+        /* Tarjetas de fotos */
         .photo-card {
             display: flex;
             flex-direction: column;
@@ -196,10 +235,7 @@
             font-weight: 500;
         }
 
-        /* ========================================= */
-        /* LIGHTBOX: EFECTO CRISTAL ESMERILADO       */
-        /* ========================================= */
-        
+        /* LIGHTBOX */
         .lightbox-modal {
             display: none; 
             position: fixed;
@@ -210,7 +246,6 @@
             width: 100%;
             height: 100%;
             overflow: auto; 
-            /* Cristal esmerilado típico de iOS/macOS */
             background-color: rgba(29, 29, 31, 0.8); 
             backdrop-filter: saturate(180%) blur(20px); 
             -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -272,13 +307,13 @@
             to {transform: scale(1); opacity: 1;}
         }
 
-        /* ========================================= */
-        /* OPTIMIZACIÓN PARA CELULARES               */
-        /* ========================================= */
-        
+        /* OPTIMIZACIÓN PARA CELULARES */
         @media (max-width: 768px) {
             header { padding: 40px 10px 10px; }
             header img { max-width: 160px; }
+            
+            .ig-button { margin-top: 15px; padding: 8px 16px; font-size: 12px; }
+            
             .navigation { padding: 10px; }
             h2#folder-title { font-size: 1.2rem; }
 
@@ -305,7 +340,14 @@
 <body>
 
     <header>
-        <img src="logo.png" alt="Fotos FZamorano Logo">
+        <img id="main-logo" src="logo.png" alt="Fotos FZamorano Logo" title="Volver al Inicio">
+        
+        <a href="https://instagram.com/fotos_fzamorano" target="_blank" class="ig-button">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            fotos_FZamorano
+        </a>
     </header>
 
     <div class="navigation">
@@ -325,7 +367,6 @@
     </div>
 
     <script>
-        // PEGA AQUÍ LA URL DE TU APLICACIÓN WEB DE APPS SCRIPT
         const API_URL = 'https://script.google.com/macros/s/AKfycbzZvbYWSGWY4HSCq_3a5KNLRou-GGx0YJ9Be42GcOpqp3RxK96BBrHES3Mt_3OQ5LHD9g/exec';
         
         let currentPage = 1;
@@ -337,6 +378,7 @@
         const loadingText = document.getElementById('loading');
         const btnBack = document.getElementById('btn-back');
         const folderTitle = document.getElementById('folder-title');
+        const mainLogo = document.getElementById('main-logo'); // Referencia al logo
 
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
@@ -438,6 +480,16 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && lightbox.style.display === 'block') {
                 closeLightbox();
+            }
+        });
+
+        // NUEVO EVENTO: Volver al inicio al pinchar el logo principal
+        mainLogo.addEventListener('click', () => {
+            if (currentFolderId !== '') {
+                currentFolderId = '';
+                folderHistory = [];
+                currentPage = 1;
+                loadContent(currentPage, currentFolderId);
             }
         });
 
