@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería | FZ Fotografías</title>
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* Misma estética que la página de inicio */
+        :root {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --ink: #111111;
+            --muted: #6b6b6b;
+            --line: rgba(0, 0, 0, 0.1);
+            --radius: 22px;
+            --pill: 980px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 14px 40px rgba(0, 0, 0, 0.14);
+            --serif: "Cormorant Garamond", Georgia, serif;
+            --sans: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --ease: cubic-bezier(0.25, 1, 0.5, 1);
+            --transition: all 0.4s var(--ease);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: var(--sans);
+            font-weight: 300;
+            background-color: var(--bg);
+            color: var(--ink);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navegación (igual a la de inicio) */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 48px;
+            background: rgba(250, 250, 250, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+        }
+        .nav-logo img {
+            height: 48px;
+            width: auto;
+            display: block;
+            mix-blend-mode: multiply;
+        }
+
+        .btn {
+            display: inline-flex;
+            white-space: nowrap;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 22px;
+            border: 1px solid var(--ink);
+            border-radius: var(--pill);
+            background: transparent;
+            color: var(--ink);
+            text-decoration: none;
+            font-family: var(--sans);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn:hover { background: var(--ink); color: var(--bg); }
+        .btn svg { width: 15px; height: 15px; fill: currentColor; }
+
+        header {
+            padding: 80px 24px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .label {
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: #8a8a8a;
+        }
+        header h1 {
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: clamp(42px, 5vw, 68px);
+            line-height: 1.1;
+            margin: 18px 0 16px;
+        }
+        header p {
+            max-width: 460px;
+            margin: 0 0 30px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px 20px 40px;
+        }
+
+        .btn-back {
+            display: none;
+            padding: 10px 22px;
+            background-color: rgba(0,0,0,0.05);
+            color: var(--ink);
+            border: none;
+            cursor: pointer;
+            font-family: var(--sans);
+            font-weight: 400;
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            border-radius: var(--pill);
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+        .btn-back:hover { background-color: rgba(0,0,0,0.1); }
+
+        h2#folder-title {
+            margin: 0;
+            font-family: var(--serif);
+            font-weight: 500;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+            padding: 20px 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Carpetas */
+        .folder-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            background-color: var(--surface);
+            color: var(--ink);
+            height: 280px;
+            padding: 30px;
+            cursor: pointer;
+            font-family: var(--serif);
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 1.15;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .folder-card::before {
+            content: "Evento";
+            font-family: var(--sans);
+            font-size: 11px;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: #8a8a8a;
+        }
+        .folder-card::after {
+            content: "→";
+            font-family: var(--sans);
+            font-size: 16px;
+            color: var(--muted);
+            transition: var(--transition);
+        }
+        .folder-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        .folder-card:hover::after { transform: translateX(6px); color: var(--ink); }
+
+        /* Fotos */
+        .photo-card {
+            display: flex;
+            flex-direction: column;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .photo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        .photo-card img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .photo-card img:hover { opacity: 0.92; }
+
+        .download-btn {
+            display: block;
+            margin: 18px 20px 20px;
+            padding: 14px;
+            background-color: var(--ink);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: var(--pill);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .download-btn:hover { background-color: #000; }
+
+        #load-more {
+            margin: 50px auto 100px;
+            padding: 16px 40px;
+            background-color: var(--ink);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            font-family: var(--sans);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            border-radius: var(--pill);
+            transition: var(--transition);
+            display: none;
+        }
+        #load-more:hover { background-color: #000; }
+
+        .loader {
+            margin: 40px;
+            color: #8a8a8a;
+            font-size: 14px;
+            letter-spacing: 0.1em;
+        }
+
+        footer {
+            margin-top: 60px;
+            border-top: 1px solid var(--line);
+            padding: 30px 48px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        footer a { color: inherit; text-decoration: none; }
+        footer a:hover { color: var(--ink); }
+
+        /* LIGHTBOX */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 40px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(17, 17, 17, 0.85);
+            backdrop-filter: saturate(160%) blur(20px);
+            -webkit-backdrop-filter: saturate(160%) blur(20px);
+        }
+        .lightbox-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            object-fit: contain;
+        }
+        .close-lightbox {
+            position: absolute;
+            top: 25px;
+            right: 40px;
+            color: rgba(255,255,255,0.6);
+            font-size: 40px;
+            font-weight: 300;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 1010;
+        }
+        .close-lightbox:hover { color: #ffffff; }
+        #lightbox-caption {
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            padding: 25px 0;
+        }
+        #lightbox-caption .download-btn {
+            margin: 0;
+            padding: 14px 32px;
+            background-color: rgba(255, 255, 255, 0.92);
+            color: #000;
+        }
+        #lightbox-caption .download-btn:hover { background-color: #ffffff; }
+        .lightbox-content, #lightbox-caption {
+            animation: softZoom 0.4s var(--ease);
+        }
+        @keyframes softZoom {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* CELULARES */
+        @media (max-width: 768px) {
+            .nav { padding: 10px 20px; }
+            .nav-logo img { height: 40px; }
+            .nav .btn { padding: 10px 16px; font-size: 11px; letter-spacing: 0.18em; }
+            header { padding: 50px 20px 20px; }
+            .navigation { padding: 10px 16px 24px; flex-direction: column; gap: 14px; }
+            h2#folder-title { font-size: 24px; }
+
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 14px;
+                padding: 16px;
+            }
+            .folder-card, .photo-card img { height: 220px; }
+            .folder-card { font-size: 21px; padding: 16px; }
+            .photo-card img { height: 200px; }
+            .download-btn { margin: 10px; padding: 11px 6px; font-size: 10px; letter-spacing: 0.12em; }
+            .close-lightbox { top: 15px; right: 25px; font-size: 35px; }
+            .lightbox-content { max-height: 75vh; margin-top: 15px; }
+            footer { flex-direction: column; align-items: center; padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <a href="index.html" class="nav-logo" aria-label="Volver a la web de FZ Fotografías">
+            <img src="logo.png" alt="FZ Fotografías">
+        </a>
+        <a href="index.html" class="btn">&larr; Volver a la web</a>
+    </nav>
+
+    <header>
+        <span class="label">Galería</span>
+        <h1>Tus fotos</h1>
+        <p>Elige el evento, toca una foto para verla en grande y descárgala en alta resolución.</p>
+        <a href="https://instagram.com/fotos_fzamorano" target="_blank" rel="noopener" class="btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            fotos_fzamorano
+        </a>
+    </header>
+
+    <div class="navigation">
+        <button id="btn-back" class="btn-back">&larr; Volver</button>
+        <h2 id="folder-title" title="Ir al inicio de la galería">Inicio</h2>
+    </div>
+
+    <div id="gallery" class="gallery"></div>
+    
+    <div id="loading" class="loader">Cargando colección...</div>
+    <button id="load-more">Ver más fotografías</button>
+
+    <div id="lightbox" class="lightbox-modal">
+        <span class="close-lightbox">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzZvbYWSGWY4HSCq_3a5KNLRou-GGx0YJ9Be42GcOpqp3RxK96BBrHES3Mt_3OQ5LHD9g/exec';
+        
+        let currentPage = 1;
+        let currentFolderId = '';
+        let folderHistory = [];
+
+        const gallery = document.getElementById('gallery');
+        const loadMoreBtn = document.getElementById('load-more');
+        const loadingText = document.getElementById('loading');
+        const btnBack = document.getElementById('btn-back');
+        const folderTitle = document.getElementById('folder-title');
+        const mainLogo = document.getElementById('folder-title'); // Título: vuelve al inicio de la galería
+
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeLightboxBtn = document.querySelector('.close-lightbox');
+
+        async function loadContent(page, folder = '') {
+            loadingText.style.display = 'block';
+            loadMoreBtn.style.display = 'none';
+            
+            if (page === 1) { gallery.innerHTML = ''; }
+
+            try {
+                let fetchUrl = `${API_URL}?page=${page}`;
+                if (folder !== '') { fetchUrl += `&folderId=${folder}`; }
+
+                const response = await fetch(fetchUrl);
+                const data = await response.json();
+
+                folderTitle.innerText = data.folderName;
+                btnBack.style.display = folderHistory.length > 0 ? 'block' : 'none';
+
+                if (data.folders && data.folders.length > 0) {
+                    data.folders.forEach(subfolder => {
+                        const folderCard = document.createElement('div');
+                        folderCard.className = 'folder-card';
+                        folderCard.innerText = subfolder.name;
+                        
+                        folderCard.addEventListener('click', () => {
+                            folderHistory.push(currentFolderId);
+                            currentFolderId = subfolder.id;
+                            currentPage = 1;
+                            loadContent(currentPage, currentFolderId);
+                        });
+                        gallery.appendChild(folderCard);
+                    });
+                }
+
+                if (data.images && data.images.length > 0) {
+                    data.images.forEach(photo => {
+                        const card = document.createElement('div');
+                        card.className = 'photo-card';
+                        
+                        const fullSizeUrl = photo.url.replace('w1000', 's4000');
+                        
+                        card.innerHTML = `
+                            <img src="${photo.url}" alt="${photo.name}" loading="lazy" class="gallery-thumb" data-full-url="${fullSizeUrl}" data-download-url="${photo.download}">
+                            <a href="${photo.download}" class="download-btn" target="_blank" download>Descargar Original</a>
+                        `;
+                        gallery.appendChild(card);
+                    });
+                }
+
+                loadingText.style.display = 'none';
+
+                if (data.nextPage) {
+                    loadMoreBtn.style.display = 'block';
+                    currentPage = data.nextPage;
+                } else if (page === 1 && data.folders.length === 0 && data.images.length === 0) {
+                    loadingText.innerHTML = "Colección vacía.";
+                    loadingText.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                loadingText.innerHTML = "No se pudo conectar. Verifica tu conexión.";
+            }
+        }
+
+        gallery.addEventListener('click', (e) => {
+            if (e.target.classList.contains('gallery-thumb')) {
+                const imgThumb = e.target;
+                const fullImageUrl = imgThumb.getAttribute('data-full-url'); 
+                const downloadUrl = imgThumb.getAttribute('data-download-url'); 
+
+                lightbox.style.display = "block";
+                lightboxImg.src = fullImageUrl;
+                
+                lightboxCaption.innerHTML = `<a href="${downloadUrl}" class="download-btn" target="_blank" download>Descargar Alta Resolución</a>`;
+                
+                document.body.style.overflow = 'hidden';
+            }
+        });
+
+        function closeLightbox() {
+            lightbox.style.display = "none";
+            lightboxImg.src = "";
+            document.body.style.overflow = 'auto';
+        }
+
+        closeLightboxBtn.addEventListener('click', closeLightbox);
+        
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target === closeLightboxBtn) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.style.display === 'block') {
+                closeLightbox();
+            }
+        });
+
+        // Volver al inicio de la galería al tocar el título
+        mainLogo.addEventListener('click', () => {
+            if (currentFolderId !== '') {
+                currentFolderId = '';
+                folderHistory = [];
+                currentPage = 1;
+                loadContent(currentPage, currentFolderId);
+            }
+        });
+
+        loadContent(currentPage, currentFolderId);
+
+        loadMoreBtn.addEventListener('click', () => {
+            loadContent(currentPage, currentFolderId);
+        });
+
+        btnBack.addEventListener('click', () => {
+            if (folderHistory.length > 0) {
+                currentFolderId = folderHistory.pop();
+                currentPage = 1;
+                loadContent(currentPage, currentFolderId);
+            }
+        });
+    </script>
+
+    <footer>
+        <span>© <span id="year">2026</span> FZ Fotografías</span>
+        <a href="index.html">&larr; Volver a la web</a>
+    </footer>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+</body>
+</html>
