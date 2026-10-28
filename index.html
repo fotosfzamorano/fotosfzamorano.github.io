@@ -338,6 +338,28 @@
         }
         .events strong { font-weight: 400; color: var(--ink); }
 
+        /* Detalles */
+        .details { padding-top: 0; }
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .details-grid figure {
+            margin: 0;
+            overflow: hidden;
+            aspect-ratio: 3 / 4;
+            border-radius: var(--radius);
+            background: #e8e8e8;
+        }
+        .details-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s var(--ease);
+        }
+        .details-grid figure:hover img { transform: scale(1.04); }
+
         /* Momentos */
         .moments { padding-top: 0; }
         .moments-grid {
@@ -447,6 +469,7 @@
             .intro .wrap { grid-template-columns: 1fr; gap: 60px; }
             .section-head { flex-direction: column; align-items: flex-start; gap: 20px; margin-bottom: 50px; }
             .gallery-grid { columns: 2; }
+            .details-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .moments-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 170px; gap: 10px; }
             .banner figure { aspect-ratio: 4 / 3; }
             .banner figcaption { padding: 60px 24px 24px; }
@@ -559,8 +582,28 @@
                 <figure class="reveal"><img src="img/fz-0035-sm.jpg" alt="Caballo mulato corriendo frente a las tribunas" loading="lazy"></figure>
                 <figure class="reveal"><img src="img/fz-collera.jpg" alt="Collera de jinetes a caballo en la medialuna" loading="lazy"><figcaption>Clasificatorio Norte Melipilla 2026</figcaption></figure>
                 <figure class="reveal"><img src="img/fz-0058-sm.jpg" alt="Caballo alazán galopando en la arena" loading="lazy"></figure>
+                <figure class="reveal"><img src="img/fz-negro.jpg" alt="Jinete sobre caballo negro levantando polvo en la pista" loading="lazy"><figcaption>Champion de Chile 2026</figcaption></figure>
+                <figure class="reveal"><img src="img/fz-atajada3.jpg" alt="Collera persiguiendo un novillo en la medialuna" loading="lazy"><figcaption>Clasificatorio Norte Melipilla 2026</figcaption></figure>
             </div>
             <p class="events reveal">Coberturas recientes: <strong>Champion de Chile 2026</strong> · <strong>Clasificatorio Norte Melipilla 2026</strong> · <strong>Rodeo de la Amistad</strong> · <strong>Melipilla</strong></p>
+        </div>
+    </section>
+
+    <section class="details" id="detalles">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <div>
+                    <span class="label">Detalles</span>
+                    <h2>La raza de cerca</h2>
+                </div>
+                <p>Escarapelas, cabezadas y miradas: lo que no se ve desde la tribuna.</p>
+            </div>
+            <div class="details-grid">
+                <figure class="reveal"><img src="img/fz-castano.jpg" alt="Cabeza de caballo castaño con cabezada clara" loading="lazy"></figure>
+                <figure class="reveal"><img src="img/fz-escarapela.jpg" alt="Caballo negro con escarapela blanca de premio" loading="lazy"></figure>
+                <figure class="reveal"><img src="img/fz-premio.jpg" alt="Caballo tordillo oscuro con escarapela y freno" loading="lazy"></figure>
+                <figure class="reveal"><img src="img/fz-cabezada.jpg" alt="Detalle del freno y la cabezada de un caballo negro" loading="lazy"></figure>
+            </div>
         </div>
     </section>
 
@@ -571,13 +614,21 @@
                     <span class="label">Momentos</span>
                     <h2>Entre tribunas y corrales</h2>
                 </div>
-                <p>El rodeo también es la espera en los corrales, la premiación y el atardecer en la medialuna.</p>
+                <p>El rodeo también es la espera en los corrales, la feria, la premiación y el atardecer en la medialuna.</p>
             </div>
             <div class="moments-grid">
                 <figure class="t reveal"><img src="img/fz-atardecer.jpg" alt="Atardecer sobre la medialuna con el foco encendido" loading="lazy"></figure>
                 <figure class="t reveal"><img src="img/fz-bandera.jpg" alt="Medialuna con la bandera chilena y jinetes en la pista" loading="lazy"></figure>
                 <figure class="w reveal"><img src="img/fz-premiacion.jpg" alt="Premiación con huasos y reinas vestidas de china" loading="lazy"></figure>
-                <figure class="w reveal"><img src="img/fz-corrales.jpg" alt="Huasos preparando sus caballos en los corrales" loading="lazy"></figure>
+                <figure class="w reveal"><img src="img/fz-feria.jpg" alt="Puestos de artesanía y aperos junto a la medialuna" loading="lazy"></figure>
+                <figure class="t reveal"><img src="img/fz-espalda.jpg" alt="Huaso con manta café visto de espalda sobre su caballo" loading="lazy"></figure>
+                <figure class="t reveal"><img src="img/fz-manta-rayas.jpg" alt="Jinete con manta a rayas avanzando sobre la arena" loading="lazy"></figure>
+                <figure class="w reveal"><img src="img/fz-preparando.jpg" alt="Huasos ensillando sus caballos bajo los árboles" loading="lazy"></figure>
+                <figure class="w reveal"><img src="img/fz-ronda.jpg" alt="Jinetes con mantas recorriendo la pista entre árboles" loading="lazy"></figure>
+                <figure class="t reveal"><img src="img/fz-pareja.jpg" alt="Dos jinetes con mantas rojas a caballo" loading="lazy"></figure>
+                <figure class="t reveal"><img src="img/fz-corrales.jpg" alt="Huasos preparando sus caballos en los corrales" loading="lazy"></figure>
+                <figure class="w reveal"><img src="img/fz-jinete.jpg" alt="Huaso con manta azul y blanca sobre caballo castaño" loading="lazy"></figure>
+                <figure class="w reveal"><img src="img/fz-atajada2.jpg" alt="Collera atajando un novillo contra la quincha" loading="lazy"></figure>
             </div>
         </div>
     </section>
